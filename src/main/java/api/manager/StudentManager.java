@@ -1,0 +1,187 @@
+package api.manager;
+
+
+
+import api.data.Student;
+import api.data.StudentInput;
+import api.repository.StudentRepository;
+import api.storage.StudentStorage;
+import api.util.StudentIDGenerator;
+
+import java.awt.print.Book;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentManager {
+    StudentRepository repository; // In-Memory Repository List
+    StudentStorage storage; // JSON File Storage
+
+
+    public StudentManager(StudentRepository repository, StudentStorage storage) {
+        this.repository = repository;
+        this.storage = storage;
+        loadFromStorage();
+    }
+
+    // Storage -> Repository
+    private void loadFromStorage() {
+        try {
+            List<Student> loadedStudents = storage.load();
+
+
+            // Update nextId based on loaded students
+            int maxId = 0;
+            for (Student s : loadedStudents) {
+                int idNum = Integer.parseInt(s.getId());
+                if (idNum > maxId) { // the largest loaded ID is the maxID
+                    maxId = idNum;
+                }
+            }
+
+
+            StudentIDGenerator.setNextId(maxId + 1);
+
+            repository.addAll(loadedStudents);
+            System.out.println("Loaded " + loadedStudents.size() + " Students from storage.");
+        } catch (IOException e) {
+            System.out.println("Could not load Students: " + e.getMessage());
+        }
+
+
+    }
+
+    // Repository -> Storage
+    private void saveToStorage() {
+        try {
+            List<Student> loaded = repository.getAll();
+            storage.save(loaded); // Calls save method of storage
+        } catch (IOException e) {
+            System.out.println("Failed to save students: " + e.getMessage());
+        }
+    }
+
+
+    // GET - "/api/students/"
+    public List<Student> getAllStudents() {
+        return new ArrayList<Student>(repository.getAll());
+    }
+
+    // GET - "/api/students/{id}"
+    public Student findStudent(String id) {
+        List<Student> studentList = repository.getAll();
+
+        for (Student student : studentList) {
+
+            if (student.getId().equals(id)) {
+                return student;
+            }
+
+        }
+        return null;
+    }
+
+
+    // POST - "/api/students/"
+    public Student createStudent(StudentInput studentInput) {
+
+        Student newStudent = new Student(
+                studentInput.getFirstName(),
+                studentInput.getLastName(),
+                studentInput.getCourse(),
+                studentInput.getYearLevel(),
+                studentInput.getGwa(),
+                studentInput.getEmail()
+        );
+
+        repository.add(newStudent);
+        saveToStorage();
+
+        return newStudent;
+    }
+
+    // DELETE - "/api/students/{id}"
+    public boolean deleteStudent(String id) {
+        Student toRemove = findStudent(id);
+        if (toRemove != null) {
+            repository.remove(toRemove);
+            saveToStorage();
+            return true;
+        }
+        return false;
+    }
+
+    // PATCH - 	"/api/students/{id}"
+    public Student patchStudent(String id, StudentInput updates) {
+        Student existing = findStudent(id);
+        if (existing == null) return null;
+
+        if (updates.getFirstName() != null) existing.setFirstName(updates.getFirstName());
+        if (updates.getLastName() != null) existing.setLastName(updates.getLastName());
+        if (updates.getCourse() != null) existing.setCourse(updates.getCourse());
+        if (updates.getYearLevel() > 0) existing.setYearLevel(updates.getYearLevel());
+        if (updates.getGwa() > 0) existing.setGwa(updates.getGwa());
+        if (updates.getEmail() != null) existing.setEmail(updates.getEmail());
+
+        saveToStorage();
+        return existing;
+    }
+
+
+    // GET /api/students/filter?maxGwa=2.5
+    // Returns students with GWA of 2.5 or BETTER (1.0, 1.25, 1.5, 2.0, 2.5)
+    public List<Student> filterMaxGwa(double maxGwa) {
+        List<Student> filteredStudents = new ArrayList<>();
+
+        for (Student student : repository.getAll()) {
+            if (student.getGwa() <= maxGwa) {  // LOWER is better
+                filteredStudents.add(student);
+            }
+        }
+        return filteredStudents;
+    }
+
+    // GET /api/students/filter?minGwa=2.5
+    // Returns students with GWA of 2.5 or WORSE (2.5, 3.0, 3.5, 4.0, 5.0)
+    public List<Student> filterMinGwa(double minGwa) {
+        List<Student> filteredStudents = new ArrayList<>();
+
+        for (Student student : repository.getAll()) {
+            if (student.getGwa() >= minGwa) {  // HIGHER is worse
+                filteredStudents.add(student);
+            }
+        }
+        return filteredStudents;
+    }
+
+    // GET /api/students/filter?minGwa=1.5&maxGwa=2.5
+    // Returns students with GWA between 1.5 and 2.5 (inclusive)
+    public List<Student> filterMinMaxGwa(double minGwa, double maxGwa) {
+        List<Student> filteredStudents = new ArrayList<>();
+
+        for (Student student : repository.getAll()) {
+            double gwa = student.getGwa();
+            if (gwa >= minGwa && gwa <= maxGwa) {
+                filteredStudents.add(student);
+            }
+        }
+        return filteredStudents;
+    }
+
+
+    //GET /api/students/search?q={searchValue} - just name and email (most common use cases)
+    public List<Student> searchStudents(String query) {
+        List<Student> results = new ArrayList<>();
+        String lowerQuery = query.toLowerCase().trim();
+
+        for (Student s : repository.getAll()) {
+            if (s.getFirstName().toLowerCase().contains(lowerQuery) ||
+                    s.getLastName().toLowerCase().contains(lowerQuery) ||
+                    s.getEmail().toLowerCase().contains(lowerQuery)) {
+                results.add(s);
+            }
+        }
+        return results;
+    }
+
+}
