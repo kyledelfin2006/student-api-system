@@ -14,7 +14,6 @@ import java.util.List;
 
 import static spark.Spark.*;
 
-import java.util.Scanner;
 public class StudentAPIController {
     public static void main(String [] args) {
 
@@ -25,6 +24,7 @@ public class StudentAPIController {
 
 
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         port(8081);  // Different port from LibraryAPI (8080)
 
         // Health check
