@@ -25,7 +25,6 @@ public class StudentAPIController {
 
 
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         port(8081);  // Different port from LibraryAPI (8080)
 
         // Health check
