@@ -65,9 +65,12 @@ public class StudentManager {
 
     private void resetIndex(){
         idIndex.clear();
+        int count = 0;
         for (Student student : repository.getAll()){
-            idIndex.put(student.getId(),student); // Add ID, Object
+            idIndex.put(student.getId(), student);
+            count++;
         }
+        System.out.println("Index rebuilt with " + count + " students"); // Log Amount
     }
 
     // GET - "/api/students/"
