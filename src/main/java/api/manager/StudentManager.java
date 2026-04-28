@@ -10,6 +10,7 @@ import api.storage.StudentStorage;
 import api.util.StudentIDGenerator;
 import api.util.Validator;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,32 +33,31 @@ public class StudentManager {
         try {
             List<Student> loadedStudents = storage.load();
 
+            // Start fresh
+            repository.clear();
 
-            // Update nextId based on loaded students
             int maxId = 0;
             for (Student s : loadedStudents) {
                 int idNum = Integer.parseInt(s.getId());
-                if (idNum > maxId) { // the largest loaded ID is the maxID
-                    maxId = idNum;
-                }
+                if (idNum > maxId) maxId = idNum;
             }
 
             StudentIDGenerator.setNextId(maxId + 1);
-
             repository.addAll(loadedStudents);
+
             System.out.println("Loaded " + loadedStudents.size() + " Students from storage.");
+
         } catch (IOException e) {
             System.out.println("Could not load Students: " + e.getMessage());
+            repository.clear(); // Ensure clean state on failure
         }
-
-
+        resetIndex(); // Rebuild HashMap index after repository is populated
     }
-
     // Repository -> Storage
     private void saveToStorage() {
         try {
             List<Student> loaded = repository.getAll();
-            storage.save(loaded); // Calls save method of storage
+            storage.save(loaded);
         } catch (IOException e) {
             System.out.println("Failed to save students: " + e.getMessage());
         }
