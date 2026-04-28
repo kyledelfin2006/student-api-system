@@ -5,8 +5,8 @@ public class StudentInput {
     private String firstName;
     private String lastName;
     private String course;
-    private int yearLevel;
-    private double gwa;
+    private Integer yearLevel;
+    private  Double gwa;
     private String email;
 
     public StudentInput() {}
@@ -35,19 +35,19 @@ public class StudentInput {
         this.course = course;
     }
 
-    public int getYearLevel() {
+    public Integer getYearLevel() {
         return yearLevel;
     }
 
-    public void setYearLevel(int yearLevel) {
+    public void setYearLevel(Integer yearLevel) {
         this.yearLevel = yearLevel;
     }
 
-    public double getGwa() {
+    public Double getGwa() {
         return gwa;
     }
 
-    public void setGwa(double gwa) {
+    public void setGwa(Double gwa) {
         this.gwa = gwa;
     }
 

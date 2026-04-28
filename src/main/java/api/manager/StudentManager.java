@@ -4,24 +4,27 @@ package api.manager;
 
 import api.data.Student;
 import api.data.StudentInput;
+import api.exceptions.InvalidInputException;
 import api.repository.StudentRepository;
 import api.storage.StudentStorage;
 import api.util.StudentIDGenerator;
-
-import java.awt.print.Book;
+import api.util.Validator;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StudentManager {
-    StudentRepository repository; // In-Memory Repository List
-    StudentStorage storage; // JSON File Storage
+    private final StudentRepository repository; // In-Memory Repository List
+    private final StudentStorage storage;   // JSON File Storage
+    private final HashMap<String, Student> idIndex = new HashMap<>();
 
 
     public StudentManager(StudentRepository repository, StudentStorage storage) {
         this.repository = repository;
         this.storage = storage;
         loadFromStorage();
+        resetIndex();
     }
 
     // Storage -> Repository
@@ -38,7 +41,6 @@ public class StudentManager {
                     maxId = idNum;
                 }
             }
-
 
             StudentIDGenerator.setNextId(maxId + 1);
 
@@ -61,6 +63,12 @@ public class StudentManager {
         }
     }
 
+    private void resetIndex(){
+        idIndex.clear();
+        for (Student student : repository.getAll()){
+            idIndex.put(student.getId(),student); // Add ID, Object
+        }
+    }
 
     // GET - "/api/students/"
     public List<Student> getAllStudents() {
@@ -69,35 +77,24 @@ public class StudentManager {
 
     // GET - "/api/students/{id}"
     public Student findStudent(String id) {
-        List<Student> studentList = repository.getAll();
-
-        for (Student student : studentList) {
-
-            if (student.getId().equals(id)) {
-                return student;
-            }
-
-        }
-        return null;
+        return idIndex.get(id);
     }
 
 
     // POST - "/api/students/"
     public Student createStudent(StudentInput studentInput) {
+            Student newStudent = new Student(
+                    studentInput.getFirstName(),
+                    studentInput.getLastName(),
+                    studentInput.getCourse(),
+                    studentInput.getYearLevel(),
+                    studentInput.getGwa(),
+                    studentInput.getEmail()
+            );
 
-        Student newStudent = new Student(
-                studentInput.getFirstName(),
-                studentInput.getLastName(),
-                studentInput.getCourse(),
-                studentInput.getYearLevel(),
-                studentInput.getGwa(),
-                studentInput.getEmail()
-        );
-
-        repository.add(newStudent);
-        saveToStorage();
-
-        return newStudent;
+            repository.add(newStudent);
+            saveToStorage();
+            return newStudent;
     }
 
     // DELETE - "/api/students/{id}"
@@ -116,12 +113,12 @@ public class StudentManager {
         Student existing = findStudent(id);
         if (existing == null) return null;
 
-        if (updates.getFirstName() != null) existing.setFirstName(updates.getFirstName());
-        if (updates.getLastName() != null) existing.setLastName(updates.getLastName());
-        if (updates.getCourse() != null) existing.setCourse(updates.getCourse());
-        if (updates.getYearLevel() > 0) existing.setYearLevel(updates.getYearLevel());
-        if (updates.getGwa() > 0) existing.setGwa(updates.getGwa());
-        if (updates.getEmail() != null) existing.setEmail(updates.getEmail());
+        if (updates.getFirstName() != null) existing.setFirstName(Validator.validateName(updates.getFirstName()));
+        if (updates.getLastName() != null) existing.setLastName(Validator.validateName(updates.getLastName()));
+        if (updates.getCourse() != null) existing.setCourse(Validator.validateCourse(updates.getCourse()));
+        if (updates.getYearLevel() != null) existing.setYearLevel(Validator.validateYearLevel(updates.getYearLevel()));
+        if (updates.getGwa() != null) existing.setGwa(Validator.validateGWA(updates.getGwa()));
+        if (updates.getEmail() != null) existing.setEmail(Validator.validateEmail(updates.getEmail()));
 
         saveToStorage();
         return existing;

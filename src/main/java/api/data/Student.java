@@ -12,20 +12,21 @@ public class Student {
     private String firstName;
     private String lastName;
     private String course;
-    private int yearLevel;
-    private double gwa;
+    private Integer yearLevel;
+    private Double gwa;
     private String email;
 
     public Student(){}
 
     public Student(String firstName, String lastName, String course, int yearLevel, double gwa, String email) {
-        this.id = StudentIDGenerator.generateNextID();
         this.firstName = Validator.validateName(firstName);
         this.lastName = Validator.validateName(lastName);;
         this.course = Validator.validateCourse(course);
         this.yearLevel = Validator.validateYearLevel(yearLevel); // Turns String Year Level -> Int YearLevel
         this.gwa = Validator.validateGWA(gwa); // Turns String Gwa -> double GWA
-        this.email = email;
+        this.email = Validator.validateEmail(email);
+
+        this.id = StudentIDGenerator.generateNextID(); // Generate ID when all Validators are passed.
     }
 
     public String getId() {
