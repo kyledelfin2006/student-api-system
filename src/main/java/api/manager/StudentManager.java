@@ -128,7 +128,16 @@ public class StudentManager {
         if (updates.getCourse() != null) existing.setCourse(Validator.validateCourse(updates.getCourse()));
         if (updates.getYearLevel() != null) existing.setYearLevel(Validator.validateYearLevel(updates.getYearLevel()));
         if (updates.getGwa() != null) existing.setGwa(Validator.validateGWA(updates.getGwa()));
-        if (updates.getEmail() != null) existing.setEmail(Validator.validateEmail(updates.getEmail()));
+        if (updates.getEmail() != null) {
+
+            // Duplicate Email Checker
+            if (!updates.getEmail().equalsIgnoreCase(existing.getEmail()) &&
+                    !isEmailUnique(updates.getEmail())) {
+                throw new InvalidInputException("Email already exists: " + updates.getEmail());
+            }
+
+            existing.setEmail(Validator.validateEmail(updates.getEmail()));
+        }
 
         saveToStorage();
         // No need to rebuild index for PATCH since ID doesn't change
