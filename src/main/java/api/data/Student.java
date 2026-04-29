@@ -25,7 +25,7 @@ public class Student {
         this.course = Validator.validateCourse(course);
         this.yearLevel = Validator.validateYearLevel(yearLevel); // Turns String Year Level -> Int YearLevel
         this.gwa = Validator.validateGWA(gwa); // Turns String Gwa -> double GWA
-        this.email = email;
+        this.email = Validator.validateEmail(email);
     }
 
     public String getId() {

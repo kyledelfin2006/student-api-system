@@ -1,27 +1,27 @@
 package api.manager;
 
-
-
 import api.data.Student;
 import api.data.StudentInput;
+import api.exceptions.InvalidInputException;
 import api.repository.StudentRepository;
 import api.storage.StudentStorage;
 import api.util.StudentIDGenerator;
-
-import java.awt.print.Book;
+import api.util.Validator;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StudentManager {
-    StudentRepository repository; // In-Memory Repository List
-    StudentStorage storage; // JSON File Storage
-
+    private final StudentRepository repository; // In-Memory Repository List
+    private final StudentStorage storage;   // JSON File Storage
+    private final HashMap<String, Student> idIndex = new HashMap<>();
 
     public StudentManager(StudentRepository repository, StudentStorage storage) {
         this.repository = repository;
         this.storage = storage;
         loadFromStorage();
+        resetIndex();
     }
 
     // Storage -> Repository
@@ -29,38 +29,46 @@ public class StudentManager {
         try {
             List<Student> loadedStudents = storage.load();
 
+            // Start fresh
+            repository.clear();
 
-            // Update nextId based on loaded students
             int maxId = 0;
             for (Student s : loadedStudents) {
                 int idNum = Integer.parseInt(s.getId());
-                if (idNum > maxId) { // the largest loaded ID is the maxID
-                    maxId = idNum;
-                }
+                if (idNum > maxId) maxId = idNum;
             }
 
-
             StudentIDGenerator.setNextId(maxId + 1);
-
             repository.addAll(loadedStudents);
+
             System.out.println("Loaded " + loadedStudents.size() + " Students from storage.");
+
         } catch (IOException e) {
             System.out.println("Could not load Students: " + e.getMessage());
+            repository.clear(); // Ensure clean state on failure
         }
-
-
+        resetIndex(); // Rebuild HashMap index after repository is populated
     }
 
     // Repository -> Storage
     private void saveToStorage() {
         try {
             List<Student> loaded = repository.getAll();
-            storage.save(loaded); // Calls save method of storage
+            storage.save(loaded);
         } catch (IOException e) {
             System.out.println("Failed to save students: " + e.getMessage());
         }
     }
 
+    private void resetIndex() {
+        idIndex.clear();
+        int count = 0;
+        for (Student student : repository.getAll()) {
+            idIndex.put(student.getId(), student); // Add ID, Object
+            count++;
+        }
+        System.out.println("Index rebuilt with " + count + " students");
+    }
 
     // GET - "/api/students/"
     public List<Student> getAllStudents() {
@@ -69,21 +77,19 @@ public class StudentManager {
 
     // GET - "/api/students/{id}"
     public Student findStudent(String id) {
-        List<Student> studentList = repository.getAll();
-
-        for (Student student : studentList) {
-
-            if (student.getId().equals(id)) {
-                return student;
-            }
-
-        }
-        return null;
+        return idIndex.get(id);
     }
 
+    private boolean isEmailUnique(String email) {
+        return repository.getAll().stream()
+                .noneMatch(s -> s.getEmail().equalsIgnoreCase(email));
+    }
 
     // POST - "/api/students/"
     public Student createStudent(StudentInput studentInput) {
+        if (!isEmailUnique(studentInput.getEmail())){
+            throw new InvalidInputException("Email already exists: " + studentInput.getEmail());
+        }
 
         Student newStudent = new Student(
                 studentInput.getFirstName(),
@@ -96,7 +102,7 @@ public class StudentManager {
 
         repository.add(newStudent);
         saveToStorage();
-
+        resetIndex(); // Update index with new student
         return newStudent;
     }
 
@@ -106,27 +112,28 @@ public class StudentManager {
         if (toRemove != null) {
             repository.remove(toRemove);
             saveToStorage();
+            resetIndex(); // Rebuild index after deletion
             return true;
         }
         return false;
     }
 
-    // PATCH - 	"/api/students/{id}"
+    // PATCH - "/api/students/{id}"
     public Student patchStudent(String id, StudentInput updates) {
         Student existing = findStudent(id);
         if (existing == null) return null;
 
-        if (updates.getFirstName() != null) existing.setFirstName(updates.getFirstName());
-        if (updates.getLastName() != null) existing.setLastName(updates.getLastName());
-        if (updates.getCourse() != null) existing.setCourse(updates.getCourse());
-        if (updates.getYearLevel() > 0) existing.setYearLevel(updates.getYearLevel());
-        if (updates.getGwa() > 0) existing.setGwa(updates.getGwa());
-        if (updates.getEmail() != null) existing.setEmail(updates.getEmail());
+        if (updates.getFirstName() != null) existing.setFirstName(Validator.validateName(updates.getFirstName()));
+        if (updates.getLastName() != null) existing.setLastName(Validator.validateName(updates.getLastName()));
+        if (updates.getCourse() != null) existing.setCourse(Validator.validateCourse(updates.getCourse()));
+        if (updates.getYearLevel() != null) existing.setYearLevel(Validator.validateYearLevel(updates.getYearLevel()));
+        if (updates.getGwa() != null) existing.setGwa(Validator.validateGWA(updates.getGwa()));
+        if (updates.getEmail() != null) existing.setEmail(Validator.validateEmail(updates.getEmail()));
 
         saveToStorage();
+        // No need to rebuild index for PATCH since ID doesn't change
         return existing;
     }
-
 
     // GET /api/students/filter?maxGwa=2.5
     // Returns students with GWA of 2.5 or BETTER (1.0, 1.25, 1.5, 2.0, 2.5)
@@ -168,8 +175,7 @@ public class StudentManager {
         return filteredStudents;
     }
 
-
-    //GET /api/students/search?q={searchValue} - just name and email (most common use cases)
+    // GET /api/students/search?q={searchValue} - just name and email (most common use cases)
     public List<Student> searchStudents(String query) {
         List<Student> results = new ArrayList<>();
         String lowerQuery = query.toLowerCase().trim();
@@ -183,5 +189,4 @@ public class StudentManager {
         }
         return results;
     }
-
 }
