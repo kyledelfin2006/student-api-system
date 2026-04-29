@@ -1,3 +1,5 @@
+package Utils;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class StudentIDGenerator {

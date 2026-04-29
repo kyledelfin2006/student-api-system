@@ -1,3 +1,7 @@
+package Model;
+
+import Utils.Validator;
+
 public class Student {
     private String firstName;
     private String lastName;
@@ -5,9 +9,7 @@ public class Student {
     private String id;
     private String email;
 
-    public Student(){
-
-    }
+    public Student(){}
 
     public Student(String email, String generatedID,  String gwa, String lastName, String firstName) {
 

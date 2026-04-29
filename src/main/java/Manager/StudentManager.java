@@ -1,13 +1,20 @@
+package Manager;
+
+import Model.Student;
+import Repository.StudentRepository;
+import Storage.StudentStorage;
+import Utils.StudentIDGenerator;
+
 import java.io.IOException;
 import java.util.List;
 
 public class StudentManager {
-    StudentRepository repository; // In-Memory Repository List
+    public StudentRepository repository; // In-Memory Repository List
     StudentStorage storage; // JSON File Storage
 
 
 
-    public StudentManager(StudentRepository repository,StudentStorage storage) {
+    public StudentManager(StudentRepository repository, StudentStorage storage) {
         this.repository = repository;
         this.storage = storage;
         loadFromStorage();
@@ -89,28 +96,13 @@ public class StudentManager {
 
     }
 
-    public void searchStudent(String id) {
-        boolean found = false;
-        List<Student> studentList = repository.getAll();
-
-        for (Student student : studentList ){
-            if (student.getId().equals(id)){
-                found =  true;
-                System.out.println(student);
+    public Student findStudentById(String id) {
+        for (Student student : repository.getAll()) {
+            if (student.getId().equals(id)) {
+                return student;
             }
         }
-
-
-        if (!found){
-            System.out.println("Student with ID " + id + " not found.");
-        }
-
-    }
-
-    public void displayStudents(){
-        for (Student student : repository.getAll()){
-            System.out.println(student);
-        }
+            return null;
     }
 
     public void updateStudentInfo(String id, String attribute, String newValue) {

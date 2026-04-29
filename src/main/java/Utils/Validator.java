@@ -1,3 +1,7 @@
+package Utils;
+
+import Exceptions.InvalidInputException;
+
 public class Validator {
     private static final double MIN_GWA = 1.0; // Best grade
     private static final double MAX_GWA = 5.0; // Worst grade
