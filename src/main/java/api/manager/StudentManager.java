@@ -123,6 +123,7 @@ public class StudentManager {
         Student existing = findStudent(id);
         if (existing == null) return null;
 
+        if (updates == null) return null;
         if (updates.getFirstName() != null) existing.setFirstName(Validator.validateName(updates.getFirstName()));
         if (updates.getLastName() != null) existing.setLastName(Validator.validateName(updates.getLastName()));
         if (updates.getCourse() != null) existing.setCourse(Validator.validateCourse(updates.getCourse()));
