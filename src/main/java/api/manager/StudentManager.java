@@ -102,7 +102,7 @@ public class StudentManager {
 
         repository.add(newStudent);
         saveToStorage();
-        resetIndex(); // Update index with new student
+        idIndex.put(newStudent.getId(),newStudent);
         return newStudent;
     }
 
@@ -112,7 +112,7 @@ public class StudentManager {
         if (toRemove != null) {
             repository.remove(toRemove);
             saveToStorage();
-            resetIndex(); // Rebuild index after deletion
+            idIndex.remove(toRemove.getId());
             return true;
         }
         return false;
