@@ -25,12 +25,12 @@ public class MainMenuPanel extends BasePanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 0, 5, 0);
 
-        JButton createButton = createStyledButton("Create Student", new Color(46, 204, 113));
-        JButton viewButton = createStyledButton("View All Students", new Color(52, 152, 219));
-        JButton updateButton = createStyledButton("Update Student", new Color(241, 196, 15));
-        JButton deleteButton = createStyledButton("Delete Student", new Color(231, 76, 60));
-        JButton searchButton = createStyledButton("Search Student", new Color(155, 89, 182));
-        JButton exitButton = createStyledButton("Exit", new Color(149, 165, 166));
+        JButton createButton = createStyledButton("Create Student", new Color(8, 25, 130));
+        JButton viewButton = createStyledButton("View All Students", new Color(189, 148, 12));
+        JButton updateButton = createStyledButton("Update Student", new Color(8, 25, 131));
+        JButton deleteButton = createStyledButton("Delete Student", new Color(189, 148, 12));
+        JButton searchButton = createStyledButton("Search Student", new Color(8, 25, 129));
+        JButton exitButton = createStyledButton("Exit", new Color(189, 148, 12));
 
         buttonPanel.add(createButton, gbc);
         buttonPanel.add(viewButton, gbc);
