@@ -1,4 +1,4 @@
-package api.data;
+package api.dto;
 
 public class StudentInput {
 

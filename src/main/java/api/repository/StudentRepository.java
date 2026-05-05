@@ -1,7 +1,7 @@
 package api.repository;
 
 
-import api.data.Student;
+import api.models.Student;
 
 import java.util.ArrayList;
 import java.util.Collections;

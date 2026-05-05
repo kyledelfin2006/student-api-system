@@ -1,4 +1,4 @@
-package api.data;
+package api.models;
 
 import api.util.StudentIDGenerator;
 import api.util.Validator;

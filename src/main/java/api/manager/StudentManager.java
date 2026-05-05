@@ -1,7 +1,7 @@
 package api.manager;
 
-import api.data.Student;
-import api.data.StudentInput;
+import api.models.Student;
+import api.dto.StudentInput;
 import api.exceptions.InvalidInputException;
 import api.repository.StudentRepository;
 import api.storage.StudentStorage;

@@ -1,7 +1,7 @@
 package api.controller;
 
-import api.data.Student;
-import api.data.StudentInput;
+import api.models.Student;
+import api.dto.StudentInput;
 import api.manager.StudentManager;
 import api.repository.StudentRepository;
 import api.storage.StudentStorage;
@@ -9,12 +9,11 @@ import api.responses.ApiResponse;
 import api.responses.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+
 import java.util.List;
 
 import static spark.Spark.*;
 
-import java.util.Scanner;
 public class StudentAPIController {
     public static void main(String [] args) {
 

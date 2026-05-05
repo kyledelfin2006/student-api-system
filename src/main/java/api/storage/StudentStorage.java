@@ -1,6 +1,6 @@
 package api.storage;
 
-import api.data.Student;
+import api.models.Student;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
