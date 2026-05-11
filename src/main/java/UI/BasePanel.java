@@ -11,6 +11,8 @@ import java.awt.*;
 public abstract class BasePanel extends JPanel {
 
     // Shared colors keep the screens consistent and easy to adjust from one place.
+
+    // All JPanels inherit these:
     protected static final Color PAGE_BACKGROUND = new Color(245, 246, 248);
     protected static final Color SURFACE_COLOR = Color.WHITE;
     protected static final Color PRIMARY_COLOR = new Color(42, 92, 170);
@@ -32,7 +34,7 @@ public abstract class BasePanel extends JPanel {
     protected static final Color PANEL_TINT = new Color(236, 239, 244);
     protected static final Color DISABLED_BACKGROUND = new Color(229, 231, 235);
 
-    private static final String FONT_FAMILY = "Segoe UI";
+    private static final String FONT_FAMILY = "Segoe UI"; // font i chose
 
     protected static final Font TITLE_FONT = new Font(FONT_FAMILY, Font.BOLD, 22);
     protected static final Font SUBTITLE_FONT = new Font(FONT_FAMILY, Font.PLAIN, 13);
@@ -119,7 +121,7 @@ public abstract class BasePanel extends JPanel {
     }
 
     protected JButton createButton(String text, Color background, Color hover) {
-        Color foreground = isLightColor(background) ? TEXT_PRIMARY : Color.WHITE;
+        Color foreground = isLightColor(background) ? TEXT_PRIMARY : Color.WHITE; // Set Color
         JButton button = new JButton(text);
         // BasicButtonUI lets our background colors show instead of the OS repainting buttons white.
         button.setUI(new BasicButtonUI());
