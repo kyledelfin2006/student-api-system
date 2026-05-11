@@ -190,7 +190,7 @@ public class SearchStudentPanel extends BasePanel {
             double gwa = Double.parseDouble(gwaString);
             if (gwa <= 1.5) {
                 resultArea.append("\n[Excellent] Academic Standing: Excellent");
-            } else if (gwa <= 2.5) {
+            } else if (gwa <= 1.75) {
                 resultArea.append("\n[Good] Academic Standing: Good");
             } else if (gwa <= 3.0) {
                 resultArea.append("\n[Satisfactory] Academic Standing: Satisfactory");

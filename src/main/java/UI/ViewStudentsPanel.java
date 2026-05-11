@@ -42,7 +42,7 @@ public class ViewStudentsPanel extends BasePanel {
         studentTable.setRowHeight(50);
         studentTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
         studentTable.getTableHeader().setBackground(new Color(52, 73, 94));
-        studentTable.getTableHeader().setForeground(Color.WHITE);
+        studentTable.getTableHeader().setForeground(Color.BLACK);
         studentTable.setSelectionBackground(new Color(52, 152, 219));
         studentTable.setSelectionForeground(Color.WHITE);
         studentTable.setShowGrid(true);
@@ -92,5 +92,10 @@ public class ViewStudentsPanel extends BasePanel {
             emptyLabel.setHorizontalAlignment(SwingConstants.CENTER);
             add(emptyLabel, BorderLayout.CENTER);
         }
+    }
+
+    @Override
+    public void onPanelShown(){
+
     }
 }

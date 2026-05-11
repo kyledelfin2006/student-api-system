@@ -82,4 +82,7 @@ public abstract class BasePanel extends JPanel {
     protected void showSuccess(String message) {
         JOptionPane.showMessageDialog(this, message, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    // This method will be called when the panel is shown
+    public abstract void onPanelShown();
 }
