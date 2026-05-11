@@ -116,4 +116,9 @@ public class CreateStudentPanel extends BasePanel {
         emailField.setText("");
         gwaField.setText("");
     }
+
+    @Override
+    public void onPanelShown() {
+        clearFields();
+    }
 }

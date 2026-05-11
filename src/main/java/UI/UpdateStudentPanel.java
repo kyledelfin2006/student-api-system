@@ -20,8 +20,6 @@ import java.util.Objects;
  * The panel follows a two-step process: first search to verify the student exists,
  * then update to modify the selected attribute.
  *
- * @author Kyle_Gwapo
- * @version 1.0 // Final Final Final Version
  */
 public class UpdateStudentPanel extends BasePanel {
 

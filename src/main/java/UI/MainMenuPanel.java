@@ -63,4 +63,9 @@ public class MainMenuPanel extends BasePanel {
         mainGbc.insets = new Insets(40, 20, 20, 20);
         add(buttonPanel, mainGbc);
     }
+
+    @Override
+    public void onPanelShown() {
+        // No action needed - main menu is static
+    }
 }
