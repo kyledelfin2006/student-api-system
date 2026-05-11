@@ -7,6 +7,7 @@ import Utils.Validator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalTime;
 
 /**
  * Panel for searching and displaying detailed student information by ID.
@@ -84,9 +85,8 @@ public class SearchStudentPanel extends BasePanel {
         // Set the main layout manager for this panel
         setLayout(new GridBagLayout());
 
-        // ==========================================
+
         // TOP PANEL - Title and Navigation
-        // ==========================================
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false); // Transparent to show panel background
 
@@ -301,54 +301,25 @@ public class SearchStudentPanel extends BasePanel {
         // ==========================================
         // Student Header Section
         // ==========================================
-        resultArea.append("╔══════════════════════════════════════════════╗\n");
-        resultArea.append("║           STUDENT FOUND SUCCESSFULLY         ║\n");
-        resultArea.append("╚══════════════════════════════════════════════╝\n\n");
 
-        // ==========================================
-        // Student Details Section
-        // ==========================================
-        resultArea.append("┌──────────────────────────────────────────────┐\n");
-        resultArea.append("│ PERSONAL INFORMATION                          │\n");
-        resultArea.append("├──────────────────────────────────────────────┤\n");
-
-        // Display student ID
-        resultArea.append(String.format("│ Student ID:    %-30s │\n", student.getId()));
-
-        // Display full name (first name + last name)
-        String fullName = student.getFirstName() + " " + student.getLastName();
-        resultArea.append(String.format("│ Full Name:     %-30s │\n", fullName));
-
-        // Display email address
-        resultArea.append(String.format("│ Email Address: %-30s │\n", student.getEmail()));
-        resultArea.append("├──────────────────────────────────────────────┤\n");
-
-        // ==========================================
-        // Academic Information Section
-        // ==========================================
-        resultArea.append("│ ACADEMIC INFORMATION                          │\n");
-        resultArea.append("├──────────────────────────────────────────────┤\n");
-
-        // Display GWA
+        // Create a formatted box with student details using Unicode box characters
+        resultArea.append("╔════════════════════════════════════════════╗\n");
+        resultArea.append(String.format("║ %-42s \n", "CURRENT STUDENT INFORMATION"));
+        resultArea.append("╠════════════════════════════════════════════╣\n");
+        resultArea.append(String.format("║ ID:         %-30s \n", student.getId()));
+        resultArea.append(String.format("║ First Name: %-30s \n", student.getFirstName()));
+        resultArea.append(String.format("║ Last Name:  %-30s \n", student.getLastName()));
+        resultArea.append(String.format("║ Email:      %-30s \n", student.getEmail()));
+        resultArea.append(String.format("║ GWA:        %-30s \n", student.getGwa()));
         String gwaString = student.getGwa();
-        resultArea.append(String.format("│ GWA:           %-30s │\n", gwaString));
 
         // Calculate and display academic standing
         String academicStanding = calculateAcademicStanding(gwaString);
-        resultArea.append(String.format("│ Standing:      %-30s │\n", academicStanding));
-        resultArea.append("└──────────────────────────────────────────────┘\n");
+        resultArea.append(String.format("║ Standing:  %-30s \n", academicStanding));
+        resultArea.append("╚═══════════════════════════════════════════");
 
-        // ==========================================
-        // Additional Information Section
-        // ==========================================
-        resultArea.append("\n Student Record Summary:\n");
-        resultArea.append("─".repeat(46) + "\n");
 
-        // Count this as a successful search (could be used for analytics)
-        resultArea.append(" Record found and displayed successfully\n");
 
-        // Add timestamp of search (optional enhancement)
-        resultArea.append(" Search completed at: " + java.time.LocalTime.now().toString() + "\n");
     }
 
     private String calculateAcademicStanding(String gwaString) {
