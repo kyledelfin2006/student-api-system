@@ -141,15 +141,15 @@ public class DeleteStudentPanel extends BasePanel {
     private void displayStudentInfo(Student student) {
         // Build the formatted string step by step for clarity
         StringBuilder info = new StringBuilder();
-        info.append("╔════════════════════════════════════════════╗\n");
-        info.append(String.format("║ %-42s ║\n", "STUDENT INFORMATION"));
-        info.append("╠════════════════════════════════════════════╣\n");
-        info.append(String.format("║ ID:         %-30s ║\n", student.getId()));
-        info.append(String.format("║ First Name: %-30s ║\n", student.getFirstName()));
-        info.append(String.format("║ Last Name:  %-30s ║\n", student.getLastName()));
-        info.append(String.format("║ Email:      %-30s ║\n", student.getEmail()));
-        info.append(String.format("║ GWA:        %-30s ║\n", student.getGwa()));
-        info.append("╚════════════════════════════════════════════╝");
+
+        info.append(String.format("║ %-42s \n", "STUDENT INFORMATION"));
+        info.append("╚══════════════════════════════════════════════\n");
+        info.append(String.format("║ ID:         %-30s \n", student.getId()));
+        info.append(String.format("║ First Name: %-30s \n", student.getFirstName()));
+        info.append(String.format("║ Last Name:  %-30s \n", student.getLastName()));
+        info.append(String.format("║ Email:      %-30s \n", student.getEmail()));
+        info.append(String.format("║ GWA:        %-30s \n", student.getGwa()));
+        info.append("╚══════════════════════════════════════════════");
 
         studentInfoArea.setText(info.toString());
     }

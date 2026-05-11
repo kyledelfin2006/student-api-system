@@ -264,15 +264,14 @@ public class UpdateStudentPanel extends BasePanel {
         StringBuilder info = new StringBuilder();
 
         // Create a formatted box with student details using Unicode box characters
-        info.append("╔════════════════════════════════════════════╗\n");
-        info.append(String.format("║ %-42s ║\n", "CURRENT STUDENT INFORMATION"));
+        info.append(String.format("║ %-42s \n", "CURRENT STUDENT INFORMATION"));
         info.append("╠════════════════════════════════════════════╣\n");
-        info.append(String.format("║ ID:         %-30s ║\n", student.getId()));
-        info.append(String.format("║ First Name: %-30s ║\n", student.getFirstName()));
-        info.append(String.format("║ Last Name:  %-30s ║\n", student.getLastName()));
-        info.append(String.format("║ Email:      %-30s ║\n", student.getEmail()));
-        info.append(String.format("║ GWA:        %-30s ║\n", student.getGwa()));
-        info.append("╚════════════════════════════════════════════╝\n");
+        info.append(String.format("║ ID:         %-30s \n", student.getId()));
+        info.append(String.format("║ First Name: %-30s \n", student.getFirstName()));
+        info.append(String.format("║ Last Name:  %-30s \n", student.getLastName()));
+        info.append(String.format("║ Email:      %-30s \n", student.getEmail()));
+        info.append(String.format("║ GWA:        %-30s \n", student.getGwa()));
+        info.append("╠════════════════════════════════════════════╣");
 
         // Add a hint about the update process
         info.append("\nSelect an attribute above and enter the new value to update.");

@@ -303,7 +303,6 @@ public class SearchStudentPanel extends BasePanel {
         // ==========================================
 
         // Create a formatted box with student details using Unicode box characters
-        resultArea.append("╔════════════════════════════════════════════╗\n");
         resultArea.append(String.format("║ %-42s \n", "CURRENT STUDENT INFORMATION"));
         resultArea.append("╠════════════════════════════════════════════╣\n");
         resultArea.append(String.format("║ ID:         %-30s \n", student.getId()));
@@ -316,7 +315,7 @@ public class SearchStudentPanel extends BasePanel {
         // Calculate and display academic standing
         String academicStanding = calculateAcademicStanding(gwaString);
         resultArea.append(String.format("║ Standing:  %-30s \n", academicStanding));
-        resultArea.append("╚═══════════════════════════════════════════");
+        resultArea.append("╚═══════════════════════════════════════════╣");
 
 
 
