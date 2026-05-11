@@ -12,60 +12,49 @@ public class MainMenuPanel extends BasePanel {
     }
 
     private void initialize() {
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
 
-        // Title
-        JLabel titleLabel = createTitleLabel("STUDENT MANAGEMENT SYSTEM");
+        JPanel card = createCardPanel();
+        card.setPreferredSize(new Dimension(640, 420));
 
-        // Button panel
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setOpaque(false);
+        JPanel header = createHeader(
+                "Student Management System",
+                null
+        );
 
-        GridBagConstraints gbc = createGridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 0, 5, 0);
+        JPanel buttonGrid = createSectionPanel(new GridLayout(3, 2, 10, 10));
+        buttonGrid.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        JButton createButton = createPrimaryButton("Create Student");
+        JButton viewButton = createTertiaryButton("View Students");
+        JButton updateButton = createSecondaryButton("Update Student");
+        JButton deleteButton = createDangerButton("Delete Student");
+        JButton searchButton = createTertiaryButton("Search Student");
+        JButton exitButton = createWarningButton("Exit");
 
-        JButton createButton = createStyledButton("Create Student", new Color(12, 39, 198));
-        JButton viewButton = createStyledButton("View All Students", new Color(6, 23, 129));
-        JButton updateButton = createStyledButton("Update Student", new Color(3, 18, 112));
-        JButton deleteButton = createStyledButton("Delete Student", new Color(3, 12, 74));
-        JButton searchButton = createStyledButton("Search Student", new Color(7, 8, 39));
-        JButton exitButton = createStyledButton("Exit", new Color(7, 8, 39));
-
-        buttonPanel.add(createButton, gbc);
-        buttonPanel.add(viewButton, gbc);
-        buttonPanel.add(updateButton, gbc);
-        buttonPanel.add(deleteButton, gbc);
-        buttonPanel.add(searchButton, gbc);
-        buttonPanel.add(exitButton, gbc);
-
-        // Add action listeners
         createButton.addActionListener(e -> parentFrame.showPanel("CreateStudent"));
-
-        // FIXED: Don't try to cast or access panel directly - just show the panel
-        // The ViewStudentsPanel will refresh its data when it becomes visible
-        viewButton.addActionListener(e -> {
-            parentFrame.showPanel("ViewStudents");
-        });
-
+        viewButton.addActionListener(e -> parentFrame.showPanel("ViewStudents"));
         updateButton.addActionListener(e -> parentFrame.showPanel("UpdateStudent"));
         deleteButton.addActionListener(e -> parentFrame.showPanel("DeleteStudent"));
         searchButton.addActionListener(e -> parentFrame.showPanel("SearchStudent"));
         exitButton.addActionListener(e -> System.exit(0));
 
-        // Layout manager
-        setLayout(new GridBagLayout());
-        GridBagConstraints mainGbc = createGridBagConstraints();
-        mainGbc.insets = new Insets(20, 20, 20, 20);
+        buttonGrid.add(createButton);
+        buttonGrid.add(viewButton);
+        buttonGrid.add(updateButton);
+        buttonGrid.add(deleteButton);
+        buttonGrid.add(searchButton);
+        buttonGrid.add(exitButton);
 
-        add(titleLabel, mainGbc);
-        mainGbc.gridy = 1;
-        mainGbc.insets = new Insets(40, 20, 20, 20);
-        add(buttonPanel, mainGbc);
+        JPanel content = createSectionPanel(new BorderLayout(0, 14));
+        content.add(buttonGrid, BorderLayout.CENTER);
+
+        card.add(header, BorderLayout.NORTH);
+        card.add(content, BorderLayout.CENTER);
+        add(wrapInPage(card, 680), BorderLayout.CENTER);
     }
 
     @Override
     public void onPanelShown() {
-        // No action needed - main menu is static
+        // The main menu is static, so it does not need to refresh when revisited.
     }
 }

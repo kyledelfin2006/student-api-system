@@ -10,7 +10,10 @@ import java.awt.*;
 public class CreateStudentPanel extends BasePanel {
     private final StudentManagementGUI parentFrame;
     private final StudentManager manager;
-    private JTextField firstNameField, lastNameField, emailField, gwaField;
+    private JTextField firstNameField;
+    private JTextField lastNameField;
+    private JTextField emailField;
+    private JTextField gwaField;
 
     public CreateStudentPanel(StudentManagementGUI parentFrame, StudentManager manager) {
         this.parentFrame = parentFrame;
@@ -19,75 +22,42 @@ public class CreateStudentPanel extends BasePanel {
     }
 
     private void initialize() {
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
 
-        // Title
-        JLabel titleLabel = createTitleLabel("CREATE NEW STUDENT");
+        JPanel card = createCardPanel();
+        card.setPreferredSize(new Dimension(680, 420));
+        card.add(createHeader("Create Student", null), BorderLayout.NORTH);
 
-        // Form panel
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setOpaque(false);
-        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        JPanel formPanel = createFormGrid();
+        firstNameField = createTextField(24);
+        lastNameField = createTextField(24);
+        emailField = createTextField(24);
+        gwaField = createTextField(24);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 10, 10, 10);
+        addFormRow(formPanel, 0, "First Name", firstNameField);
+        addFormRow(formPanel, 1, "Last Name", lastNameField);
+        addFormRow(formPanel, 2, "Email", emailField);
+        addFormRow(formPanel, 3, "GWA (1.0 - 5.0)", gwaField);
 
-        // First Name
-        gbc.gridx = 0; gbc.gridy = 0;
-        formPanel.add(createLabel("First Name:"), gbc);
-        gbc.gridx = 1;
-        firstNameField = createTextField(20);
-        formPanel.add(firstNameField, gbc);
-
-        // Last Name
-        gbc.gridx = 0; gbc.gridy = 1;
-        formPanel.add(createLabel("Last Name:"), gbc);
-        gbc.gridx = 1;
-        lastNameField = createTextField(20);
-        formPanel.add(lastNameField, gbc);
-
-        // Email
-        gbc.gridx = 0; gbc.gridy = 2;
-        formPanel.add(createLabel("Email:"), gbc);
-        gbc.gridx = 1;
-        emailField = createTextField(20);
-        formPanel.add(emailField, gbc);
-
-        // GWA
-        gbc.gridx = 0; gbc.gridy = 3;
-        formPanel.add(createLabel("GWA (1.0-5.0):"), gbc);
-        gbc.gridx = 1;
-        gwaField = createTextField(20);
-        formPanel.add(gwaField, gbc);
-
-        // Button panel
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonPanel.setOpaque(false);
-
-        JButton createButton = createStyledButton("Create Student", new Color(46, 204, 113));
-        JButton clearButton = createStyledButton("Clear", new Color(52, 152, 219));
-        JButton backButton = createStyledButton("Back to Menu", new Color(149, 165, 166));
+        JPanel buttonRow = createButtonRow();
+        JButton createButton = createSuccessButton("Save Student");
+        JButton clearButton = createTertiaryButton("Clear");
+        JButton backButton = createSecondaryButton("Back to Menu");
 
         createButton.addActionListener(e -> createStudent());
         clearButton.addActionListener(e -> clearFields());
         backButton.addActionListener(e -> parentFrame.showPanel("MainMenu"));
 
-        buttonPanel.add(createButton);
-        buttonPanel.add(clearButton);
-        buttonPanel.add(backButton);
+        buttonRow.add(createButton);
+        buttonRow.add(clearButton);
+        buttonRow.add(backButton);
 
-        // Layout
-        setLayout(new GridBagLayout());
-        GridBagConstraints mainGbc = createGridBagConstraints();
-        mainGbc.insets = new Insets(10, 20, 10, 20);
+        JPanel body = createSectionPanel(new BorderLayout(0, 16));
+        body.add(formPanel, BorderLayout.NORTH);
+        body.add(buttonRow, BorderLayout.SOUTH);
 
-        add(titleLabel, mainGbc);
-        mainGbc.gridy = 1;
-        add(formPanel, mainGbc);
-        mainGbc.gridy = 2;
-        mainGbc.insets = new Insets(30, 20, 10, 20);
-        add(buttonPanel, mainGbc);
+        card.add(body, BorderLayout.CENTER);
+        add(wrapInPage(card, 720), BorderLayout.CENTER);
     }
 
     private void createStudent() {
@@ -97,13 +67,13 @@ public class CreateStudentPanel extends BasePanel {
         String gwa = gwaField.getText().trim();
 
         try {
+            // Keep validation in the UI flow so users get feedback before storage is touched.
             Validator.validateName(firstName);
             Validator.validateName(lastName);
             Validator.validateEmail(email);
             Validator.validateGWA(gwa);
-
             manager.createStudent(email, gwa, lastName, firstName);
-            showSuccess("Student created successfully!");
+            showSuccess("Student created successfully.");
             clearFields();
         } catch (InvalidInputException e) {
             showError(e.getMessage());
@@ -115,6 +85,7 @@ public class CreateStudentPanel extends BasePanel {
         lastNameField.setText("");
         emailField.setText("");
         gwaField.setText("");
+        firstNameField.requestFocusInWindow();
     }
 
     @Override

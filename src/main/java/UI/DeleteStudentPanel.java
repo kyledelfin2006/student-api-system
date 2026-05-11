@@ -19,72 +19,36 @@ public class DeleteStudentPanel extends BasePanel {
     public DeleteStudentPanel(StudentManagementGUI parentFrame, StudentManager manager) {
         this.parentFrame = parentFrame;
         this.manager = manager;
-        this.foundStudent = null;
         initialize();
     }
 
     private void initialize() {
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
 
-        // Title
-        JLabel titleLabel = createTitleLabel("DELETE STUDENT");
+        JPanel card = createCardPanel();
+        card.setPreferredSize(new Dimension(780, 500));
+        card.add(createHeader("Delete Student", null), BorderLayout.NORTH);
 
-        // Form panel
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setOpaque(false);
-        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        JPanel formPanel = createFormGrid();
+        idField = createTextField(18);
+        idField.addActionListener(e -> searchStudent());
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        // Student ID input
-        gbc.gridx = 0; gbc.gridy = 0;
-        formPanel.add(createLabel("Student ID:"), gbc);
-        gbc.gridx = 1;
-        idField = createTextField(15);
-        formPanel.add(idField, gbc);
-
-        // Search button
-        gbc.gridx = 2;
-        JButton searchButton = createStyledButton("Search", new Color(52, 152, 219));
+        JPanel searchFieldRow = createSectionPanel(new BorderLayout(10, 0));
+        searchFieldRow.add(idField, BorderLayout.CENTER);
+        JButton searchButton = createPrimaryButton("Find");
         searchButton.addActionListener(e -> searchStudent());
-        formPanel.add(searchButton, gbc);
+        searchFieldRow.add(searchButton, BorderLayout.EAST);
+        addFormRow(formPanel, 0, "Student ID", searchFieldRow);
 
-        // Student Information Display Area
-        gbc.gridx = 0; gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.insets = new Insets(20, 10, 10, 10);
+        studentInfoArea = createTextArea(9, 40);
+        JScrollPane infoScrollPane = createScrollPane(studentInfoArea);
+        infoScrollPane.setPreferredSize(new Dimension(100, 220));
+        addFormRow(formPanel, 1, "Student Info", infoScrollPane);
 
-        studentInfoArea = new JTextArea(8, 30);
-        studentInfoArea.setEditable(false);
-        studentInfoArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        studentInfoArea.setBorder(BorderFactory.createTitledBorder("Student Information"));
-        studentInfoArea.setBackground(new Color(245, 245, 245));
-
-        JScrollPane scrollPane = new JScrollPane(studentInfoArea);
-        formPanel.add(scrollPane, gbc);
-
-        // Reset gridwidth and weight
-        gbc.gridwidth = 1;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        // Button panel
-        gbc.gridx = 0; gbc.gridy = 2;
-        gbc.gridwidth = 3;
-        gbc.insets = new Insets(20, 10, 10, 10);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonPanel.setOpaque(false);
-
-        deleteButton = createStyledButton("Delete Student", new Color(231, 76, 60));
-        deleteButton.setEnabled(false); // Disabled until student is found
-        JButton backButton = createStyledButton("Back to Menu", new Color(149, 165, 166));
+        JPanel buttonRow = createButtonRow();
+        deleteButton = createDangerButton("Delete Student");
+        deleteButton.setEnabled(false);
+        JButton backButton = createSecondaryButton("Back to Menu");
 
         deleteButton.addActionListener(e -> deleteStudent());
         backButton.addActionListener(e -> {
@@ -92,80 +56,64 @@ public class DeleteStudentPanel extends BasePanel {
             parentFrame.showPanel("MainMenu");
         });
 
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(backButton);
-        formPanel.add(buttonPanel, gbc);
+        buttonRow.add(deleteButton);
+        buttonRow.add(backButton);
 
-        // Main layout
-        setLayout(new GridBagLayout());
-        GridBagConstraints mainGbc = createGridBagConstraints();
-        mainGbc.insets = new Insets(10, 20, 10, 20);
+        JPanel body = createSectionPanel(new BorderLayout(0, 16));
+        body.add(formPanel, BorderLayout.CENTER);
+        body.add(buttonRow, BorderLayout.SOUTH);
 
-        add(titleLabel, mainGbc);
-        mainGbc.gridy = 1;
-        add(formPanel, mainGbc);
+        card.add(body, BorderLayout.CENTER);
+        add(wrapInPage(card, 880), BorderLayout.CENTER);
     }
 
     private void searchStudent() {
         String id = idField.getText().trim();
-
         if (id.isEmpty()) {
-            showError("Please enter a Student ID to search.");
+            showError("Please enter a Student ID.");
             return;
         }
 
         try {
             Validator.validateID(id);
-
             foundStudent = manager.findStudentById(id);
 
             if (foundStudent == null) {
                 studentInfoArea.setText("No student found with ID: " + id);
+                studentInfoArea.setForeground(DANGER_COLOR);
                 deleteButton.setEnabled(false);
-                foundStudent = null;
                 return;
             }
 
-            // Display student information
-            displayStudentInfo(foundStudent);
+            studentInfoArea.setForeground(TEXT_PRIMARY);
+            studentInfoArea.setText(
+                    "ID: " + foundStudent.getId() + "\n" +
+                    "First Name: " + foundStudent.getFirstName() + "\n" +
+                    "Last Name: " + foundStudent.getLastName() + "\n" +
+                    "Email: " + foundStudent.getEmail() + "\n" +
+                    "GWA: " + foundStudent.getGwa()
+            );
+            studentInfoArea.setCaretPosition(0);
             deleteButton.setEnabled(true);
-
         } catch (InvalidInputException e) {
-            showError(e.getMessage());
-            deleteButton.setEnabled(false);
             foundStudent = null;
+            deleteButton.setEnabled(false);
             studentInfoArea.setText("");
+            studentInfoArea.setForeground(TEXT_PRIMARY);
+            showError(e.getMessage());
         }
-    }
-
-    private void displayStudentInfo(Student student) {
-        // Build the formatted string step by step for clarity
-        StringBuilder info = new StringBuilder();
-
-        info.append(String.format("║ %-42s \n", "STUDENT INFORMATION"));
-        info.append("╚══════════════════════════════════════════════\n");
-        info.append(String.format("║ ID:         %-30s \n", student.getId()));
-        info.append(String.format("║ First Name: %-30s \n", student.getFirstName()));
-        info.append(String.format("║ Last Name:  %-30s \n", student.getLastName()));
-        info.append(String.format("║ Email:      %-30s \n", student.getEmail()));
-        info.append(String.format("║ GWA:        %-30s \n", student.getGwa()));
-        info.append("╚══════════════════════════════════════════════");
-
-        studentInfoArea.setText(info.toString());
     }
 
     private void deleteStudent() {
         if (foundStudent == null) {
-            showError("No student selected for deletion. Please search for a student first.");
+            showError("Search for a student before deleting.");
             return;
         }
 
+        // Confirm destructive actions so accidental clicks do not remove a record.
         int confirm = JOptionPane.showConfirmDialog(
                 this,
-                "Are you sure you want to delete this student?\n\n" +
-                        "ID: " + foundStudent.getId() + "\n" +
-                        "Name: " + foundStudent.getFirstName() + " " + foundStudent.getLastName() + "\n\n" +
-                        "This action cannot be undone!",
+                "Delete student " + foundStudent.getFirstName() + " " + foundStudent.getLastName() + "?",
                 "Confirm Deletion",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
@@ -174,7 +122,7 @@ public class DeleteStudentPanel extends BasePanel {
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 manager.deleteStudent(foundStudent.getId());
-                showSuccess("Student deleted successfully!");
+                showSuccess("Student deleted successfully.");
                 clearForm();
             } catch (Exception e) {
                 showError("Error deleting student: " + e.getMessage());
@@ -183,13 +131,14 @@ public class DeleteStudentPanel extends BasePanel {
     }
 
     private void clearForm() {
+        foundStudent = null;
         idField.setText("");
         studentInfoArea.setText("");
+        studentInfoArea.setForeground(TEXT_PRIMARY);
         deleteButton.setEnabled(false);
-        foundStudent = null;
+        idField.requestFocusInWindow();
     }
 
-    // This method will be called when the panel is shown
     @Override
     public void onPanelShown() {
         clearForm();

@@ -4,98 +4,103 @@ import Manager.StudentManager;
 import Model.Student;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.List;
 
 public class ViewStudentsPanel extends BasePanel {
     private final StudentManagementGUI parentFrame;
     private final StudentManager manager;
-    private DefaultTableModel tableModel;
+    private final DefaultTableModel tableModel;
+    private final JLabel countLabel;
 
     public ViewStudentsPanel(StudentManagementGUI parentFrame, StudentManager manager) {
         this.parentFrame = parentFrame;
         this.manager = manager;
-        initialize();
-    }
-
-    private void initialize() {
-        setLayout(new BorderLayout(10, 10));
-
-        // Title
-        JLabel titleLabel = createTitleLabel("ALL STUDENTS");
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-
-        // Table
-        // Array list of the columns
-        String[] columns = {"ID", "First Name", "Last Name", "Email", "GWA"};
-        tableModel = new DefaultTableModel(columns, 0) {
+        this.tableModel = new DefaultTableModel(new String[]{"ID", "First Name", "Last Name", "Email", "GWA"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+        this.countLabel = createSubtitleLabel("");
+        initialize();
+    }
 
-        // Setup JTable
+    private void initialize() {
+        setLayout(new BorderLayout());
+
+        JPanel card = createCardPanel();
+        card.setPreferredSize(new Dimension(980, 620));
+
+        JPanel header = createSectionPanel(new BorderLayout());
+        header.add(createHeader("Student Records", null), BorderLayout.CENTER);
+        countLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        header.add(countLabel, BorderLayout.EAST);
+
         JTable studentTable = new JTable(tableModel);
-        studentTable.setFont(new Font("Arial", Font.PLAIN, 13));
-        studentTable.setRowHeight(50);
-        studentTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
-        studentTable.getTableHeader().setBackground(new Color(52, 73, 94));
-        studentTable.getTableHeader().setForeground(Color.BLACK);
-        studentTable.setSelectionBackground(new Color(52, 152, 219));
-        studentTable.setSelectionForeground(Color.WHITE);
-        studentTable.setShowGrid(true);
-        studentTable.setGridColor(new Color(189, 195, 199));
+        studentTable.setFont(TEXT_FONT);
+        studentTable.setRowHeight(28);
+        studentTable.setGridColor(BORDER_COLOR);
+        studentTable.setShowVerticalLines(false);
+        studentTable.setShowHorizontalLines(true);
+        studentTable.setSelectionBackground(new Color(226, 232, 240));
+        studentTable.setSelectionForeground(TEXT_PRIMARY);
+        studentTable.setFillsViewportHeight(true);
+        studentTable.setBackground(SURFACE_COLOR);
+        studentTable.setForeground(TEXT_PRIMARY);
+        studentTable.setIntercellSpacing(new Dimension(0, 1));
+        studentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane scrollPane = new JScrollPane(studentTable);
-        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(189, 195, 199)));
+        JTableHeader tableHeader = studentTable.getTableHeader();
+        tableHeader.setFont(BUTTON_FONT);
+        tableHeader.setBackground(new Color(238, 240, 243));
+        tableHeader.setForeground(TEXT_PRIMARY);
+        tableHeader.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
+        tableHeader.setOpaque(true);
 
-        // Button panel
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonPanel.setOpaque(false);
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tableHeader.getDefaultRenderer();
+        headerRenderer.setBackground(new Color(238, 240, 243));
+        headerRenderer.setForeground(TEXT_PRIMARY);
 
-        JButton refreshButton = createStyledButton("Refresh", new Color(52, 152, 219));
-        JButton backButton = createStyledButton("Back to Menu", new Color(149, 165, 166));
+        JScrollPane tableScrollPane = createScrollPane(studentTable);
 
+        JPanel buttonRow = createButtonRow();
+        JButton refreshButton = createPrimaryButton("Refresh");
+        JButton backButton = createSecondaryButton("Back to Menu");
         refreshButton.addActionListener(e -> refreshData());
         backButton.addActionListener(e -> parentFrame.showPanel("MainMenu"));
+        buttonRow.add(refreshButton);
+        buttonRow.add(backButton);
 
-        buttonPanel.add(refreshButton);
-        buttonPanel.add(backButton);
-
-        // Add components
-        add(titleLabel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        refreshData();
+        card.add(header, BorderLayout.NORTH);
+        card.add(tableScrollPane, BorderLayout.CENTER);
+        card.add(buttonRow, BorderLayout.SOUTH);
+        add(wrapInPage(card, 1040), BorderLayout.CENTER);
     }
 
     public void refreshData() {
         tableModel.setRowCount(0);
         List<Student> students = manager.repository.getAll();
 
+        // Rebuild the table each time this screen opens so the list always mirrors current storage.
         for (Student student : students) {
-            Object[] row = {
+            tableModel.addRow(new Object[]{
                     student.getId(),
                     student.getFirstName(),
                     student.getLastName(),
                     student.getEmail(),
-                    student.getGwa()  // FIXED: Display GWA as String directly, no formatting needed
-            };
-            tableModel.addRow(row);
+                    student.getGwa()
+            });
         }
 
-        if (students.isEmpty()) {
-            JLabel emptyLabel = createLabel("No students found.");
-            emptyLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            add(emptyLabel, BorderLayout.CENTER);
-        }
+        countLabel.setText(students.size() + (students.size() == 1 ? " student" : " students"));
     }
 
     @Override
-    public void onPanelShown(){
-
+    public void onPanelShown() {
+        refreshData();
     }
 }
