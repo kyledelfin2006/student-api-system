@@ -27,7 +27,7 @@ public class DeleteStudentPanel extends BasePanel {
 
         JPanel card = createCardPanel();
         card.setPreferredSize(new Dimension(780, 500));
-        card.add(createHeader("Delete Student", null), BorderLayout.NORTH);
+        card.add(createHeader("Delete Student", "Search by ID before removing a student record."), BorderLayout.NORTH);
 
         JPanel formPanel = createFormGrid();
         idField = createTextField(18);
@@ -48,7 +48,7 @@ public class DeleteStudentPanel extends BasePanel {
         JPanel buttonRow = createButtonRow();
         deleteButton = createDangerButton("Delete Student");
         deleteButton.setEnabled(false);
-        JButton backButton = createSecondaryButton("Back to Menu");
+        JButton backButton = createSecondaryButton("Dashboard");
 
         deleteButton.addActionListener(e -> deleteStudent());
         backButton.addActionListener(e -> {
@@ -110,7 +110,6 @@ public class DeleteStudentPanel extends BasePanel {
             return;
         }
 
-        // Confirm destructive actions so accidental clicks do not remove a record.
         int confirm = JOptionPane.showConfirmDialog(
                 this,
                 "Delete student " + foundStudent.getFirstName() + " " + foundStudent.getLastName() + "?",

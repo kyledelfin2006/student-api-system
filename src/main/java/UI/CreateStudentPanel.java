@@ -25,8 +25,8 @@ public class CreateStudentPanel extends BasePanel {
         setLayout(new BorderLayout());
 
         JPanel card = createCardPanel();
-        card.setPreferredSize(new Dimension(680, 420));
-        card.add(createHeader("Create Student", null), BorderLayout.NORTH);
+        card.setPreferredSize(new Dimension(700, 440));
+        card.add(createHeader("Create Student", "Add a new student record with a valid email and GWA."), BorderLayout.NORTH);
 
         JPanel formPanel = createFormGrid();
         firstNameField = createTextField(24);
@@ -42,7 +42,7 @@ public class CreateStudentPanel extends BasePanel {
         JPanel buttonRow = createButtonRow();
         JButton createButton = createSuccessButton("Save Student");
         JButton clearButton = createTertiaryButton("Clear");
-        JButton backButton = createSecondaryButton("Back to Menu");
+        JButton backButton = createSecondaryButton("Dashboard");
 
         createButton.addActionListener(e -> createStudent());
         clearButton.addActionListener(e -> clearFields());
@@ -67,7 +67,6 @@ public class CreateStudentPanel extends BasePanel {
         String gwa = gwaField.getText().trim();
 
         try {
-            // Keep validation in the UI flow so users get feedback before storage is touched.
             Validator.validateName(firstName);
             Validator.validateName(lastName);
             Validator.validateEmail(email);

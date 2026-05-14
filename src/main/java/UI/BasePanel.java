@@ -10,38 +10,39 @@ import java.awt.*;
 
 public abstract class BasePanel extends JPanel {
 
-    // Shared colors keep the screens consistent and easy to adjust from one place.
-
-    // All JPanels inherit these:
-    protected static final Color PAGE_BACKGROUND = new Color(245, 246, 248);
+    protected static final Color PAGE_BACKGROUND = new Color(247, 248, 250);
     protected static final Color SURFACE_COLOR = Color.WHITE;
-    protected static final Color PRIMARY_COLOR = new Color(42, 92, 170);
-    protected static final Color PRIMARY_HOVER = new Color(33, 75, 142);
-    protected static final Color SECONDARY_COLOR = new Color(96, 104, 116);
-    protected static final Color SECONDARY_HOVER = new Color(76, 84, 96);
-    protected static final Color TERTIARY_COLOR = new Color(225, 230, 236);
-    protected static final Color TERTIARY_HOVER = new Color(211, 218, 228);
-    protected static final Color SUCCESS_COLOR = new Color(36, 128, 79);
-    protected static final Color SUCCESS_HOVER = new Color(29, 103, 64);
-    protected static final Color WARNING_COLOR = new Color(96, 104, 116);
-    protected static final Color WARNING_HOVER = new Color(76, 84, 96);
-    protected static final Color DANGER_COLOR = new Color(180, 47, 59);
-    protected static final Color DANGER_HOVER = new Color(146, 36, 47);
-    protected static final Color TEXT_PRIMARY = new Color(31, 35, 40);
-    protected static final Color TEXT_MUTED = new Color(93, 99, 108);
-    protected static final Color BORDER_COLOR = new Color(209, 213, 219);
-    protected static final Color INPUT_BACKGROUND = new Color(250, 251, 252);
-    protected static final Color PANEL_TINT = new Color(236, 239, 244);
-    protected static final Color DISABLED_BACKGROUND = new Color(229, 231, 235);
+    protected static final Color SIDEBAR_BACKGROUND = new Color(28, 31, 36);
+    protected static final Color SIDEBAR_HOVER = new Color(43, 48, 56);
+    protected static final Color PRIMARY_COLOR = new Color(32, 84, 147);
+    protected static final Color PRIMARY_HOVER = new Color(25, 67, 119);
+    protected static final Color SECONDARY_COLOR = new Color(82, 88, 98);
+    protected static final Color SECONDARY_HOVER = new Color(65, 70, 79);
+    protected static final Color TERTIARY_COLOR = new Color(239, 242, 246);
+    protected static final Color TERTIARY_HOVER = new Color(228, 233, 239);
+    protected static final Color SUCCESS_COLOR = new Color(30, 126, 88);
+    protected static final Color SUCCESS_HOVER = new Color(23, 101, 70);
+    protected static final Color WARNING_COLOR = new Color(82, 88, 98);
+    protected static final Color WARNING_HOVER = new Color(65, 70, 79);
+    protected static final Color DANGER_COLOR = new Color(174, 54, 68);
+    protected static final Color DANGER_HOVER = new Color(139, 42, 54);
+    protected static final Color TEXT_PRIMARY = new Color(30, 34, 39);
+    protected static final Color TEXT_MUTED = new Color(100, 108, 119);
+    protected static final Color TEXT_INVERSE_MUTED = new Color(189, 197, 208);
+    protected static final Color BORDER_COLOR = new Color(218, 223, 230);
+    protected static final Color INPUT_BACKGROUND = new Color(252, 253, 254);
+    protected static final Color PANEL_TINT = new Color(241, 244, 248);
+    protected static final Color DISABLED_BACKGROUND = new Color(231, 234, 239);
 
-    private static final String FONT_FAMILY = "Segoe UI"; // font i chose
+    private static final String FONT_FAMILY = "Segoe UI";
 
-    protected static final Font TITLE_FONT = new Font(FONT_FAMILY, Font.BOLD, 22);
+    protected static final Font APP_TITLE_FONT = new Font(FONT_FAMILY, Font.BOLD, 18);
+    protected static final Font TITLE_FONT = new Font(FONT_FAMILY, Font.BOLD, 24);
     protected static final Font SUBTITLE_FONT = new Font(FONT_FAMILY, Font.PLAIN, 13);
     protected static final Font LABEL_FONT = new Font(FONT_FAMILY, Font.PLAIN, 13);
     protected static final Font BUTTON_FONT = new Font(FONT_FAMILY, Font.BOLD, 13);
     protected static final Font TEXT_FONT = new Font(FONT_FAMILY, Font.PLAIN, 13);
-    protected static final Font STUDENT_INFO_FONT = new Font(FONT_FAMILY, Font.PLAIN, 16);
+    protected static final Font STUDENT_INFO_FONT = new Font(FONT_FAMILY, Font.PLAIN, 15);
 
     protected BasePanel() {
         setBackground(PAGE_BACKGROUND);
@@ -55,7 +56,7 @@ public abstract class BasePanel extends JPanel {
     }
 
     protected JPanel createCardPanel() {
-        JPanel card = new JPanel(new BorderLayout(0, 16));
+        JPanel card = new JPanel(new BorderLayout(0, 18));
         card.setBackground(SURFACE_COLOR);
         card.setOpaque(true);
         card.setBorder(createCardBorder());
@@ -71,7 +72,7 @@ public abstract class BasePanel extends JPanel {
     protected Border createCardBorder() {
         return new CompoundBorder(
                 BorderFactory.createLineBorder(BORDER_COLOR),
-                new EmptyBorder(22, 22, 22, 22)
+                new EmptyBorder(26, 28, 26, 28)
         );
     }
 
@@ -121,9 +122,14 @@ public abstract class BasePanel extends JPanel {
     }
 
     protected JButton createButton(String text, Color background, Color hover) {
-        Color foreground = isLightColor(background) ? TEXT_PRIMARY : Color.WHITE; // Set Color
-        JButton button = new JButton(text);
-        // BasicButtonUI lets our background colors show instead of the OS repainting buttons white.
+        Color foreground = isLightColor(background) ? TEXT_PRIMARY : Color.WHITE;
+        JButton button = new JButton(text) {
+            @Override
+            public void setEnabled(boolean enabled) {
+                super.setEnabled(enabled);
+                setButtonColors(this, background, hover, foreground);
+            }
+        };
         button.setUI(new BasicButtonUI());
         button.setFont(BUTTON_FONT);
         button.setOpaque(true);
@@ -133,7 +139,7 @@ public abstract class BasePanel extends JPanel {
         button.setRolloverEnabled(true);
         button.setBorder(new CompoundBorder(
                 BorderFactory.createLineBorder(isLightColor(background) ? BORDER_COLOR : background.darker()),
-                new EmptyBorder(9, 15, 9, 15)
+                new EmptyBorder(10, 16, 10, 16)
         ));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         button.getModel().addChangeListener(e -> setButtonColors(button, background, hover, foreground));
@@ -149,7 +155,7 @@ public abstract class BasePanel extends JPanel {
         textField.setCaretColor(TEXT_PRIMARY);
         textField.setOpaque(true);
         textField.setBorder(createInputBorder());
-        textField.setMargin(new Insets(4, 6, 4, 6));
+        textField.setMargin(new Insets(5, 7, 5, 7));
         return textField;
     }
 
@@ -199,7 +205,7 @@ public abstract class BasePanel extends JPanel {
         textArea.setOpaque(true);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setBorder(new EmptyBorder(12, 12, 12, 12));
+        textArea.setBorder(new EmptyBorder(14, 14, 14, 14));
         return textArea;
     }
 
@@ -228,17 +234,16 @@ public abstract class BasePanel extends JPanel {
 
     protected JPanel createFormGrid() {
         JPanel panel = createSectionPanel(new GridBagLayout());
-        panel.setBorder(new EmptyBorder(4, 0, 4, 0));
+        panel.setBorder(new EmptyBorder(6, 0, 4, 0));
         return panel;
     }
 
-    // Keeps labels and fields aligned the same way on every form screen.
     protected void addFormRow(JPanel panel, int row, String labelText, JComponent field) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 0, 8, 12);
+        gbc.insets = new Insets(0, 0, 12, 14);
         panel.add(createLabel(labelText), gbc);
 
         gbc = new GridBagConstraints();
@@ -246,13 +251,13 @@ public abstract class BasePanel extends JPanel {
         gbc.gridy = row;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 0, 8, 0);
+        gbc.insets = new Insets(0, 0, 12, 0);
         panel.add(field, gbc);
     }
 
     protected JPanel createButtonRow() {
-        JPanel panel = createSectionPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        panel.setBorder(new EmptyBorder(8, 0, 0, 0));
+        JPanel panel = createSectionPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        panel.setBorder(new EmptyBorder(10, 0, 0, 0));
         return panel;
     }
 
@@ -280,6 +285,23 @@ public abstract class BasePanel extends JPanel {
         return page;
     }
 
+    protected JPanel createStatTile(String label, String value) {
+        JPanel tile = new JPanel(new BorderLayout(0, 6));
+        tile.setBackground(PANEL_TINT);
+        tile.setBorder(new CompoundBorder(
+                BorderFactory.createLineBorder(BORDER_COLOR),
+                new EmptyBorder(16, 16, 16, 16)
+        ));
+
+        JLabel valueLabel = createTitleLabel(value);
+        valueLabel.setFont(TITLE_FONT.deriveFont(Font.BOLD, 22f));
+
+        JLabel labelLabel = createSubtitleLabel(label);
+        tile.add(valueLabel, BorderLayout.NORTH);
+        tile.add(labelLabel, BorderLayout.CENTER);
+        return tile;
+    }
+
     protected void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -298,7 +320,7 @@ public abstract class BasePanel extends JPanel {
     private Border createInputBorder() {
         return new CompoundBorder(
                 BorderFactory.createLineBorder(BORDER_COLOR),
-                new EmptyBorder(8, 10, 8, 10)
+                new EmptyBorder(9, 11, 9, 11)
         );
     }
 

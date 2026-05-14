@@ -36,7 +36,7 @@ public class ViewStudentsPanel extends BasePanel {
         card.setPreferredSize(new Dimension(980, 620));
 
         JPanel header = createSectionPanel(new BorderLayout());
-        header.add(createHeader("Student Records", null), BorderLayout.CENTER);
+        header.add(createHeader("Student Records", "Browse every saved student in one clean table."), BorderLayout.CENTER);
         countLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         header.add(countLabel, BorderLayout.EAST);
 
@@ -53,6 +53,18 @@ public class ViewStudentsPanel extends BasePanel {
         studentTable.setForeground(TEXT_PRIMARY);
         studentTable.setIntercellSpacing(new Dimension(0, 1));
         studentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        studentTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                           boolean hasFocus, int row, int column) {
+                Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (!isSelected) {
+                    component.setBackground(row % 2 == 0 ? SURFACE_COLOR : new Color(249, 250, 252));
+                }
+                setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+                return component;
+            }
+        });
 
         JTableHeader tableHeader = studentTable.getTableHeader();
         tableHeader.setFont(BUTTON_FONT);
@@ -69,7 +81,7 @@ public class ViewStudentsPanel extends BasePanel {
 
         JPanel buttonRow = createButtonRow();
         JButton refreshButton = createPrimaryButton("Refresh");
-        JButton backButton = createSecondaryButton("Back to Menu");
+        JButton backButton = createSecondaryButton("Dashboard");
         refreshButton.addActionListener(e -> refreshData());
         backButton.addActionListener(e -> parentFrame.showPanel("MainMenu"));
         buttonRow.add(refreshButton);
@@ -85,7 +97,6 @@ public class ViewStudentsPanel extends BasePanel {
         tableModel.setRowCount(0);
         List<Student> students = manager.repository.getAll();
 
-        // Rebuild the table each time this screen opens so the list always mirrors current storage.
         for (Student student : students) {
             tableModel.addRow(new Object[]{
                     student.getId(),

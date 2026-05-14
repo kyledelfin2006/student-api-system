@@ -15,56 +15,52 @@ public class MainMenuPanel extends BasePanel {
         setLayout(new BorderLayout());
 
         JPanel card = createCardPanel();
-        card.setPreferredSize(new Dimension(640, 420));
+        card.setPreferredSize(new Dimension(720, 470));
 
         JPanel header = createHeader(
-                "Student Management System",
-                null
+                "Dashboard",
+                "Choose a task from here or use the left navigation."
         );
 
-        // Each JButton is different in design, all with ActionListeners
+        JPanel summaryGrid = createSectionPanel(new GridLayout(1, 3, 12, 0));
+        summaryGrid.add(createStatTile("Start a new record", "Create"));
+        summaryGrid.add(createStatTile("Review the full list", "View"));
+        summaryGrid.add(createStatTile("Find by student ID", "Search"));
 
-        // Grid Format
-        JPanel buttonGrid = createSectionPanel(new GridLayout(3, 2, 10, 10));
+        JPanel buttonGrid = createSectionPanel(new GridLayout(2, 3, 12, 12));
+        buttonGrid.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
 
-        // Set Border
-        buttonGrid.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
-
-        // Instantiate Buttons
-        JButton createButton = createPrimaryButton("Create Student");
-        JButton viewButton = createTertiaryButton("View Students");
-        JButton updateButton = createSecondaryButton("Update Student");
-        JButton deleteButton = createDangerButton("Delete Student");
-        JButton searchButton = createTertiaryButton("Search Student");
+        JButton createButton = createPrimaryButton("Create");
+        JButton viewButton = createTertiaryButton("View");
+        JButton searchButton = createTertiaryButton("Search");
+        JButton updateButton = createSecondaryButton("Update");
+        JButton deleteButton = createDangerButton("Delete");
         JButton exitButton = createWarningButton("Exit");
 
-        // Create Action Listeners
         createButton.addActionListener(e -> parentFrame.showPanel("CreateStudent"));
         viewButton.addActionListener(e -> parentFrame.showPanel("ViewStudents"));
+        searchButton.addActionListener(e -> parentFrame.showPanel("SearchStudent"));
         updateButton.addActionListener(e -> parentFrame.showPanel("UpdateStudent"));
         deleteButton.addActionListener(e -> parentFrame.showPanel("DeleteStudent"));
-        searchButton.addActionListener(e -> parentFrame.showPanel("SearchStudent"));
         exitButton.addActionListener(e -> System.exit(0));
-
-        // Add Each Button to the Button Grid
 
         buttonGrid.add(createButton);
         buttonGrid.add(viewButton);
+        buttonGrid.add(searchButton);
         buttonGrid.add(updateButton);
         buttonGrid.add(deleteButton);
-        buttonGrid.add(searchButton);
         buttonGrid.add(exitButton);
 
-        JPanel content = createSectionPanel(new BorderLayout(0, 14));
+        JPanel content = createSectionPanel(new BorderLayout(0, 18));
+        content.add(summaryGrid, BorderLayout.NORTH);
         content.add(buttonGrid, BorderLayout.CENTER);
 
         card.add(header, BorderLayout.NORTH);
         card.add(content, BorderLayout.CENTER);
-        add(wrapInPage(card, 680), BorderLayout.CENTER);
+        add(wrapInPage(card, 780), BorderLayout.CENTER);
     }
 
     @Override
     public void onPanelShown() {
-        // The main menu is static, so it does not need to refresh when revisited.
     }
 }

@@ -25,7 +25,7 @@ public class SearchStudentPanel extends BasePanel {
 
         JPanel card = createCardPanel();
         card.setPreferredSize(new Dimension(800, 520));
-        card.add(createHeader("Search Student", null), BorderLayout.NORTH);
+        card.add(createHeader("Search Student", "Look up a saved student by their generated ID."), BorderLayout.NORTH);
 
         JPanel formPanel = createFormGrid();
         searchField = createTextField(18);
@@ -46,7 +46,7 @@ public class SearchStudentPanel extends BasePanel {
 
         JPanel buttonRow = createButtonRow();
         JButton clearButton = createTertiaryButton("Clear");
-        JButton backButton = createSecondaryButton("Back to Menu");
+        JButton backButton = createSecondaryButton("Dashboard");
         clearButton.addActionListener(e -> clearForm());
         backButton.addActionListener(e -> {
             clearForm();
@@ -81,7 +81,6 @@ public class SearchStudentPanel extends BasePanel {
                 return;
             }
 
-            // Show only the stored fields so the result stays easy to scan.
             resultArea.setForeground(TEXT_PRIMARY);
             resultArea.setText(
                     "ID: " + student.getId() + "\n" +

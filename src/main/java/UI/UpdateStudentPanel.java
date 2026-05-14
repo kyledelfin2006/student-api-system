@@ -30,7 +30,7 @@ public class UpdateStudentPanel extends BasePanel {
 
         JPanel card = createCardPanel();
         card.setPreferredSize(new Dimension(820, 580));
-        card.add(createHeader("Update Student", null), BorderLayout.NORTH);
+        card.add(createHeader("Update Student", "Find a record first, then choose the field to change."), BorderLayout.NORTH);
 
         JPanel formPanel = createFormGrid();
         idField = createTextField(18);
@@ -58,7 +58,7 @@ public class UpdateStudentPanel extends BasePanel {
         updateButton = createSuccessButton("Apply Update");
         updateButton.setEnabled(false);
         JButton clearButton = createTertiaryButton("Clear");
-        JButton backButton = createSecondaryButton("Back to Menu");
+        JButton backButton = createSecondaryButton("Dashboard");
 
         updateButton.addActionListener(e -> updateStudent());
         clearButton.addActionListener(e -> clearForm());
@@ -137,7 +137,6 @@ public class UpdateStudentPanel extends BasePanel {
         try {
             Validator.validateID(idField.getText().trim());
 
-            // Validate the new value according to the field selected by the user.
             switch (Objects.requireNonNull(attribute).toLowerCase()) {
                 case "first name", "last name" -> Validator.validateName(newValue);
                 case "email" -> Validator.validateEmail(newValue);
