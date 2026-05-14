@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-
-
         // UIManager is a class that manages the look and feel (visual appearance) of Swing components.
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
