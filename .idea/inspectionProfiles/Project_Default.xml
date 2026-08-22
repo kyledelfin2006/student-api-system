@@ -6,15 +6,18 @@
       <option name="ignoredModules">
         <list>
           <option value="student-management-system" />
+          <option value="library-api-system" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="com.fasterxml.jackson.core:jackson-core:2.19.4" />
+          <option value="com.fasterxml.jackson.core:jackson-core:2.15.2" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
+          <option value="Not exploitable" />
           <option value="Not exploitable" />
         </list>
       </option>

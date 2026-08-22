@@ -25,21 +25,21 @@ public class MainMenuPanel extends BasePanel {
         JPanel summaryGrid = createSectionPanel(new GridLayout(1, 3, 12, 0));
         summaryGrid.add(createStatTile("Start a new record", "Create"));
         summaryGrid.add(createStatTile("Review the full list", "View"));
-        summaryGrid.add(createStatTile("Find by student ID", "Search"));
+        summaryGrid.add(createStatTile("Filter students", "Search"));
 
         JPanel buttonGrid = createSectionPanel(new GridLayout(2, 3, 12, 12));
         buttonGrid.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
 
         JButton createButton = createPrimaryButton("Create");
         JButton viewButton = createTertiaryButton("View");
-        JButton searchButton = createTertiaryButton("Search");
+        JButton searchButton = createPrimaryButton("Search");
         JButton updateButton = createSecondaryButton("Update");
         JButton deleteButton = createDangerButton("Delete");
         JButton exitButton = createWarningButton("Exit");
 
         createButton.addActionListener(e -> parentFrame.showPanel("CreateStudent"));
         viewButton.addActionListener(e -> parentFrame.showPanel("ViewStudents"));
-        searchButton.addActionListener(e -> parentFrame.showPanel("SearchStudent"));
+        searchButton.addActionListener(e -> parentFrame.showPanel("AdvancedSearch"));
         updateButton.addActionListener(e -> parentFrame.showPanel("UpdateStudent"));
         deleteButton.addActionListener(e -> parentFrame.showPanel("DeleteStudent"));
         exitButton.addActionListener(e -> System.exit(0));

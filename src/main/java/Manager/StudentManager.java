@@ -74,6 +74,67 @@ public class StudentManager {
         return null;
     }
 
+    public List<Student> searchStudents(String firstName, String lastName, String email, String gwaMin, String gwaMax) {
+        List<Student> all = repository.getAll();
+        List<Student> results = new java.util.ArrayList<>();
+
+        Double min = null;
+        Double max = null;
+
+        if (gwaMin != null && !gwaMin.isBlank()) {
+            min = Double.parseDouble(gwaMin.trim());
+        }
+        if (gwaMax != null && !gwaMax.isBlank()) {
+            max = Double.parseDouble(gwaMax.trim());
+        }
+
+        for (Student s : all) {
+            boolean matches = true;
+
+            if (firstName != null && !firstName.isBlank()) {
+                if (!s.getFirstName().toLowerCase().contains(firstName.trim().toLowerCase())) {
+                    matches = false;
+                }
+            }
+
+            if (matches && lastName != null && !lastName.isBlank()) {
+                if (!s.getLastName().toLowerCase().contains(lastName.trim().toLowerCase())) {
+                    matches = false;
+                }
+            }
+
+            if (matches && email != null && !email.isBlank()) {
+                if (!s.getEmail().toLowerCase().contains(email.trim().toLowerCase())) {
+                    matches = false;
+                }
+            }
+
+            if (matches && min != null) {
+                try {
+                    double gwa = Double.parseDouble(s.getGwa());
+                    if (gwa < min) matches = false;
+                } catch (NumberFormatException e) {
+                    matches = false;
+                }
+            }
+
+            if (matches && max != null) {
+                try {
+                    double gwa = Double.parseDouble(s.getGwa());
+                    if (gwa > max) matches = false;
+                } catch (NumberFormatException e) {
+                    matches = false;
+                }
+            }
+
+            if (matches) {
+                results.add(s);
+            }
+        }
+
+        return results;
+    }
+
     public List<Student> getAllStudents() {
         return repository.getAll();
     }

@@ -41,7 +41,7 @@ public class StudentManagementGUI extends JFrame {
         registerPanel("ViewStudents", new ViewStudentsPanel(this, manager));
         registerPanel("UpdateStudent", new UpdateStudentPanel(this, manager));
         registerPanel("DeleteStudent", new DeleteStudentPanel(this, manager));
-        registerPanel("SearchStudent", new SearchStudentPanel(this, manager));
+        registerPanel("AdvancedSearch", new AdvancedSearchPanel(this, manager));
 
         JPanel appShell = new JPanel(new BorderLayout());
         appShell.setBackground(BasePanel.PAGE_BACKGROUND);
@@ -124,7 +124,7 @@ public class StudentManagementGUI extends JFrame {
         addNavigationButton(navigation, "MainMenu", "Dashboard");
         addNavigationButton(navigation, "CreateStudent", "Create Student");
         addNavigationButton(navigation, "ViewStudents", "View Students");
-        addNavigationButton(navigation, "SearchStudent", "Search Student");
+        addNavigationButton(navigation, "AdvancedSearch", "Advanced Search");
         addNavigationButton(navigation, "UpdateStudent", "Update Student");
         addNavigationButton(navigation, "DeleteStudent", "Delete Student");
 
@@ -176,7 +176,7 @@ public class StudentManagementGUI extends JFrame {
         sectionTitle.setText(switch (panelName) {
             case "CreateStudent" -> "Create Student";
             case "ViewStudents" -> "Student Records";
-            case "SearchStudent" -> "Search Student";
+            case "AdvancedSearch" -> "Advanced Search";
             case "UpdateStudent" -> "Update Student";
             case "DeleteStudent" -> "Delete Student";
             default -> "Dashboard";
