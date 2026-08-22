@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e363dcd4-a1c2-436a-971d-27a3d44f68f8" name="Changes" comment="Improved UI">
+    <list default="true" id="e363dcd4-a1c2-436a-971d-27a3d44f68f8" name="Changes" comment="[feat] de-bloat">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Manager/StudentManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Manager/StudentManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Repository/Repository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Repository/StudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Repository/StudentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Storage/Storage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Storage/StudentStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Storage/StudentStorage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UI/BasePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/BasePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UI/StudentManagementGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/StudentManagementGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Storage/StudentStorage.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UI/ViewStudentsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/ViewStudentsPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/StudentIDGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/StudentIDGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,6 +176,7 @@
     <MESSAGE value="Refactor Files" />
     <MESSAGE value="Changed colors" />
     <MESSAGE value="Improved UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improved UI" />
+    <MESSAGE value="[feat] de-bloat" />
+    <option name="LAST_COMMIT_MESSAGE" value="[feat] de-bloat" />
   </component>
 </project>
