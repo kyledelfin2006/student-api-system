@@ -67,11 +67,4 @@ public class Student {
     public String getEmail() {
         return email;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s %s, ID: %s, GWA: %s, email: %s",
-                firstName, lastName, id, gwa, email);
-
-    }
 }

@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e363dcd4-a1c2-436a-971d-27a3d44f68f8" name="Changes" comment="Improved UI" />
+    <list default="true" id="e363dcd4-a1c2-436a-971d-27a3d44f68f8" name="Changes" comment="Improved UI">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Manager/StudentManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Manager/StudentManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Repository/Repository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Repository/StudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Repository/StudentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Storage/Storage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Storage/StudentStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Storage/StudentStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UI/BasePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/BasePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UI/StudentManagementGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/StudentManagementGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UI/ViewStudentsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/ViewStudentsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/StudentIDGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/StudentIDGenerator.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,12 +43,12 @@
     &quot;assignee&quot;: &quot;kyledelfin2006&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/kyledelfin2006/student-api-system.git",
-    "accountId": "cfb89d03-e41f-49d3-b8fe-26197fa275aa"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kyledelfin2006/student-api-system.git&quot;,
+    &quot;accountId&quot;: &quot;cfb89d03-e41f-49d3-b8fe-26197fa275aa&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -47,25 +59,29 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Main.executor": "Debug",
+    "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "gui-version",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/User/IdeaProjects/student-crud-app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37" />
+        <option value="bundled-jdk-30f59d01ecdd-34e2839f716b-intellij.indexing.shared.core-IU-262.9437.185" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.9437.185" />
       </set>
     </attachedChunks>
   </component>

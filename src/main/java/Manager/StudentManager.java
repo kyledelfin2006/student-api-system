@@ -2,98 +2,67 @@ package Manager;
 
 import Model.Student;
 import Repository.StudentRepository;
-import Storage.StudentStorage;
 import Utils.StudentIDGenerator;
 
 import java.io.IOException;
 import java.util.List;
 
 public class StudentManager {
-    public StudentRepository repository; // In-Memory Repository List
-    StudentStorage storage; // JSON File Storage
+    public StudentRepository repository;
 
-
-
-    public StudentManager(StudentRepository repository, StudentStorage storage) {
+    public StudentManager(StudentRepository repository) {
         this.repository = repository;
-        this.storage = storage;
         loadFromStorage();
     }
 
-    // Storage -> Repository
-    private void loadFromStorage(){
-        try{
-            List<Student> loadedStudents = storage.load();
-
-
-
-            // Update nextId based on loaded students
+    private void loadFromStorage() {
+        try {
+            repository.loadFromFile();
+            List<Student> loadedStudents = repository.getAll();
             int maxId = 0;
             for (Student s : loadedStudents) {
                 int idNum = Integer.parseInt(s.getId());
-                if (idNum > maxId) { // the largest loaded ID is the maxID
+                if (idNum > maxId) {
                     maxId = idNum;
                 }
             }
-
-
             StudentIDGenerator.setNextId(maxId + 1);
-
-            repository.addAll(loadedStudents);
             System.out.println("Loaded " + loadedStudents.size() + " Students from storage.");
         } catch (IOException e) {
-            System.out.println("Could not load Students: "  + e.getMessage());
+            System.out.println("Could not load Students: " + e.getMessage());
         }
-
-
-
     }
 
-    // Repository -> Storage
     private void saveToStorage() {
         try {
-            List<Student> loaded = repository.getAll();
-            storage.save(loaded); // Calls save method of storage
+            repository.saveToFile();
         } catch (IOException e) {
             System.out.println("Failed to save students: " + e.getMessage());
         }
     }
 
-
-    public void createStudent(String email, String gwa, String lastName, String firstName){
-
+    public void createStudent(String email, String gwa, String lastName, String firstName) {
         String generatedId = StudentIDGenerator.generateNextID();
-        Student student = new Student(email,generatedId,gwa,lastName,firstName);
-        repository.add(student); // add to repository first
-        saveToStorage(); // then, add to storage
-
+        Student student = new Student(email, generatedId, gwa, lastName, firstName);
+        repository.add(student);
+        saveToStorage();
     }
 
-    public void deleteStudent(String id){
+    public void deleteStudent(String id) {
         boolean found = false;
         List<Student> studentList = repository.getAll();
-
-        for (Student student : studentList){
-            if (student.getId().equals(id)){
+        for (Student student : studentList) {
+            if (student.getId().equals(id)) {
                 found = true;
-
-                // try catch for saving and removing
-                try{
-                    repository.remove(student);
-                    saveToStorage();
-                } catch (Exception e) {
-                    System.out.println("Delete failed: " + e.getMessage());
-                }
-
+                repository.remove(student);
+                saveToStorage();
                 System.out.println("Student " + id + " successfully deleted. ");
                 break;
             }
         }
-
-        if (!found){
+        if (!found) {
             System.out.println("Student with ID " + id + " not found.");
         }
-
     }
 
     public Student findStudentById(String id) {
@@ -102,33 +71,32 @@ public class StudentManager {
                 return student;
             }
         }
-            return null;
+        return null;
+    }
+
+    public List<Student> getAllStudents() {
+        return repository.getAll();
     }
 
     public void updateStudentInfo(String id, String attribute, String newValue) {
-       boolean found = false;
-        for (Student student : repository.getAll()){
-            if (student.getId().equals(id)){
+        boolean found = false;
+        for (Student student : repository.getAll()) {
+            if (student.getId().equals(id)) {
                 found = true;
-                switch (attribute.toLowerCase().trim()){
+                switch (attribute.toLowerCase().trim()) {
                     case "first name" -> student.setFirstName(newValue);
                     case "last name" -> student.setLastName(newValue);
                     case "gwa" -> student.setGwa(newValue);
                     case "email" -> student.setEmail(newValue);
-
                     default -> System.out.println("Could Not Find Attribute");
                 }
-
                 saveToStorage();
                 System.out.println("Student updated.");
                 break;
             }
         }
-
-        if (!found){
+        if (!found) {
             System.out.println("Student ID " + id + " not found.");
         }
-
-
     }
 }

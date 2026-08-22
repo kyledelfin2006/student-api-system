@@ -95,7 +95,7 @@ public class ViewStudentsPanel extends BasePanel {
 
     public void refreshData() {
         tableModel.setRowCount(0);
-        List<Student> students = manager.repository.getAll();
+        List<Student> students = manager.getAllStudents();
 
         for (Student student : students) {
             tableModel.addRow(new Object[]{

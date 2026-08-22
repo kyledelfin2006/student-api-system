@@ -2,39 +2,48 @@ package Repository;
 
 import Model.Student;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-public class StudentRepository implements Repository<Student> {
-   private final List<Student> studentList;
+public class StudentRepository {
+    private final List<Student> studentList;
+    private final ObjectMapper mapper;
+    private final String filename;
 
-    public StudentRepository(List<Student> studentList) {
+    public StudentRepository(String filename, List<Student> studentList) {
+        this.filename = filename;
         this.studentList = studentList;
+        this.mapper = new ObjectMapper();
+        this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
-
-    @Override
     public void add(Student s) {
-      studentList.add(s);
+        studentList.add(s);
     }
 
-    @Override
     public void remove(Student s) {
-     studentList.remove(s);
+        studentList.remove(s);
     }
 
-    @Override
     public List<Student> getAll() {
         return Collections.unmodifiableList(studentList);
     }
 
-    @Override
-    public void clear() {
-     studentList.clear();
+    public void loadFromFile() throws IOException {
+        File file = new File(filename);
+        if (!file.exists()) {
+            return;
+        }
+        List<Student> loaded = mapper.readValue(file, new TypeReference<List<Student>>() {});
+        studentList.addAll(loaded);
     }
 
-    public void addAll(List<Student> students){
-        studentList.addAll(students);
+    public void saveToFile() throws IOException {
+        mapper.writeValue(new File(filename), studentList);
     }
-
 }

@@ -146,7 +146,6 @@ public abstract class BasePanel extends JPanel {
         setButtonColors(button, background, hover, foreground);
         return button;
     }
-
     protected JTextField createTextField(int columns) {
         JTextField textField = new JTextField(columns);
         textField.setFont(TEXT_FONT);

@@ -106,7 +106,7 @@ public class StudentManagementGUI extends JFrame {
         JPanel brand = new JPanel(new BorderLayout(0, 4));
         brand.setOpaque(false);
 
-        JLabel title = new JLabel("Student CRUD");
+        JLabel title = new JLabel("Student Management System");
         title.setFont(BasePanel.APP_TITLE_FONT);
         title.setForeground(Color.WHITE);
 
