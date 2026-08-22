@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e363dcd4-a1c2-436a-971d-27a3d44f68f8" name="Changes" comment="[feat] de-bloat">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="e363dcd4-a1c2-436a-971d-27a3d44f68f8" name="Changes" comment="[feat] updated search, de-bloat">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Manager/StudentManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Manager/StudentManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UI/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/MainMenuPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UI/SearchStudentPanel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UI/StudentManagementGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UI/StudentManagementGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,6 +175,7 @@
     <MESSAGE value="Changed colors" />
     <MESSAGE value="Improved UI" />
     <MESSAGE value="[feat] de-bloat" />
-    <option name="LAST_COMMIT_MESSAGE" value="[feat] de-bloat" />
+    <MESSAGE value="[feat] updated search, de-bloat" />
+    <option name="LAST_COMMIT_MESSAGE" value="[feat] updated search, de-bloat" />
   </component>
 </project>
